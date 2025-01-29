@@ -1,13 +1,17 @@
+import 'package:draggable_list/widgets/item_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../custom_drag_listener.dart';
 
 class CustomItem extends StatelessWidget {
-  final Function()? onDelete;
   final int index;
+  final TextEditingController titleController;
 
-  const CustomItem({Key? key, this.onDelete, required this.index})
-      : super(key: key);
+  const CustomItem({
+    Key? key,
+    required this.index,
+    required this.titleController,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,17 +37,14 @@ class CustomItem extends StatelessWidget {
             ),
           ),
           Flexible(
-              child:
-                  // ItemWidget(
-                  //   key: ValueKey(_itemIndexOrder[index]),
-                  //   titleController: _titleControllers[index],
-                  //   onDelete: (itemKey) {
-                  //     _removeItem(itemKey);
-                  //   },
-                  // ),
-                  Container(
-            color: Colors.cyan,
-          )),
+            child: ItemWidget(
+              key: ValueKey('$index'),
+              titleController: titleController,
+              onDelete: (itemKey) {
+                // _removeItem(itemKey);
+              },
+            ),
+          ),
         ],
       ),
     );

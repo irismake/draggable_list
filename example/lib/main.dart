@@ -1,4 +1,3 @@
-import 'package:draggable_list/widgets/custom_item.dart';
 import 'package:flutter/material.dart';
 import 'package:draggable_list/draggable_list.dart';
 
@@ -26,32 +25,10 @@ class MyDraggableList extends StatefulWidget {
 }
 
 class _MyDraggableListState extends State<MyDraggableList> {
-  final List<Widget> items = List.generate(
-      10,
-      (index) => CustomItem(
-            key: ValueKey(index),
-            onDelete: () {
-              // setState(() {
-              //   items.remove(index);
-              // });
-            },
-            index: index,
-          ));
-
   @override
   Widget build(BuildContext context) {
     return DraggableListView(
-      itemNum: items.length,
-      items: items,
-      onReorder: (oldIndex, newIndex) {
-        setState(() {
-          if (oldIndex < newIndex) {
-            newIndex -= 1;
-          }
-          final item = items.removeAt(oldIndex);
-          items.insert(newIndex, item);
-        });
-      },
+      itemNum: 5,
     );
   }
 }
