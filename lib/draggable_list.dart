@@ -10,11 +10,13 @@ import 'widgets/custom_list.dart';
 class DraggableListView extends StatefulWidget {
   final int listNum;
   final DraggableListStyle style;
+  final Duration duration;
 
   const DraggableListView({
     Key? key,
     required this.listNum,
     this.style = const DraggableListStyle(),
+    this.duration = const Duration(milliseconds: 150),
   }) : super(key: key);
 
   @override
@@ -36,6 +38,31 @@ class _DraggableListViewState extends State<DraggableListView> {
   Widget build(BuildContext context) {
     return Obx(
       () => ReorderableListView.builder(
+        proxyDecorator: (child, index, animation) {
+          return Material(
+            color: Colors.transparent,
+            child: ScaleTransition(
+              scale: animation.drive(
+                Tween<double>(
+                        begin: widget.style.animateBeginScale,
+                        end: widget.style.animateEndScale)
+                    .chain(
+                  CurveTween(curve: Curves.linear),
+                ),
+              ),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width,
+                  maxHeight: MediaQuery.of(context).size.height * 0.9,
+                ),
+                child: child,
+              ),
+            ),
+          );
+        },
+        buildDefaultDragHandles: true,
+        physics: ClampingScrollPhysics(),
+        shrinkWrap: true,
         itemCount: controller.listTextControllers.length,
         itemBuilder: (context, index) {
           return CustomList(
@@ -43,6 +70,7 @@ class _DraggableListViewState extends State<DraggableListView> {
             textEditingController: controller.listTextControllers[index],
             index: index,
             style: widget.style,
+            duration: widget.duration,
           );
         },
         onReorder: (oldIndex, newIndex) {

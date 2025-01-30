@@ -11,6 +11,8 @@ class DraggableListStyle {
   final EdgeInsets listPadding;
   final EdgeInsets textPadding;
   final EdgeInsets orderPadding;
+  final double animateBeginScale;
+  final double animateEndScale;
 
   const DraggableListStyle({
     this.backgroundColor = Colors.white,
@@ -42,5 +44,7 @@ class DraggableListStyle {
     this.textPadding =
         const EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
     this.orderPadding = const EdgeInsets.all(16.0),
+    this.animateBeginScale = 1.0,
+    this.animateEndScale = 1.1,
   });
 }

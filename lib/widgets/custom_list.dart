@@ -7,12 +7,14 @@ class CustomList extends StatefulWidget {
   final int index;
   final TextEditingController textEditingController;
   final DraggableListStyle style;
+  final Duration duration;
 
   const CustomList({
     Key? key,
     required this.index,
     required this.textEditingController,
     this.style = const DraggableListStyle(),
+    required this.duration,
   }) : super(key: key);
 
   @override
@@ -42,9 +44,7 @@ class _CustomListState extends State<CustomList> {
   Widget build(BuildContext context) {
     return CustomDragListener(
       key: Key('${widget.index}'),
-      delay: const Duration(
-        milliseconds: 150,
-      ),
+      delay: widget.duration,
       parentContext: context,
       index: widget.index,
       child: Row(
@@ -65,44 +65,38 @@ class _CustomListState extends State<CustomList> {
                   color: widget.style.backgroundColor,
                   borderRadius: widget.style.borderRadius,
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: TextFormField(
-                        focusNode: _titleFocusNode,
-                        keyboardType: TextInputType.multiline,
-                        controller: widget.textEditingController,
-                        textAlignVertical: TextAlignVertical.top,
-                        textInputAction: TextInputAction.newline,
-                        maxLines: null,
-                        style: widget.style.contentTextStyle,
-                        decoration: InputDecoration(
-                          hintText: widget.style.hintText,
-                          hintStyle: widget.style.hintTextStyle,
-                          isDense: true,
-                          contentPadding: widget.style.textPadding,
-                          border: InputBorder.none,
-                        ),
-                      ),
+                child: Expanded(
+                  child: TextFormField(
+                    focusNode: _titleFocusNode,
+                    keyboardType: TextInputType.multiline,
+                    controller: widget.textEditingController,
+                    textAlignVertical: TextAlignVertical.top,
+                    textInputAction: TextInputAction.newline,
+                    maxLines: null,
+                    style: widget.style.contentTextStyle,
+                    decoration: InputDecoration(
+                      hintText: widget.style.hintText,
+                      hintStyle: widget.style.hintTextStyle,
+                      isDense: true,
+                      contentPadding: widget.style.textPadding,
+                      border: InputBorder.none,
                     ),
-                    // InkWell(
-                    //   onTap: () {
-                    //     FocusScope.of(context).unfocus();
-                    //     widget.onDelete(listKey);
-                    //   },
-                    //   child: Padding(
-                    //     padding: EdgeInsets.symmetric(vertical: 20.0),
-                    //     child: Image.asset(
-                    //       'assets/icons/icon_delete_fill.png',
-                    //       width: 20.0,
-                    //       color: Color(0xFF343a40),
-                    //     ),
-                    //   ),
-                    // ),
-                  ],
+                  ),
                 ),
+                // InkWell(
+                //   onTap: () {
+                //     FocusScope.of(context).unfocus();
+                //     widget.onDelete(listKey);
+                //   },
+                //   child: Padding(
+                //     padding: EdgeInsets.symmetric(vertical: 20.0),
+                //     child: Image.asset(
+                //       'assets/icons/icon_delete_fill.png',
+                //       width: 20.0,
+                //       color: Color(0xFF343a40),
+                //     ),
+                //   ),
+                // ),
               ),
             ),
           ),
