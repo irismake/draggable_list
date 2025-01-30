@@ -3,15 +3,15 @@ library reorderable_list;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'state/item_controller.dart';
-import 'widgets/custom_item.dart';
+import 'state/list_controller.dart';
+import 'widgets/custom_list.dart';
 
 class DraggableListView extends StatefulWidget {
-  final int itemNum;
+  final int listNum;
 
   const DraggableListView({
     Key? key,
-    required this.itemNum,
+    required this.listNum,
   }) : super(key: key);
 
   @override
@@ -19,13 +19,13 @@ class DraggableListView extends StatefulWidget {
 }
 
 class _DraggableListViewState extends State<DraggableListView> {
-  final ItemController controller = Get.put(ItemController());
+  final ListController controller = Get.put(ListController());
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      controller.initializeItems(widget.itemNum);
+      controller.initializeLists(widget.listNum);
     });
   }
 
@@ -33,16 +33,16 @@ class _DraggableListViewState extends State<DraggableListView> {
   Widget build(BuildContext context) {
     return Obx(
       () => ReorderableListView.builder(
-        itemCount: controller.itemTextControllers.length,
+        itemCount: controller.listTextControllers.length,
         itemBuilder: (context, index) {
-          return CustomItem(
+          return CustomList(
             key: ValueKey(index),
-            titleController: controller.itemTextControllers[index],
+            textEditingController: controller.listTextControllers[index],
             index: index,
           );
         },
         onReorder: (oldIndex, newIndex) {
-          controller.reorderItem(oldIndex, newIndex);
+          controller.reorderList(oldIndex, newIndex);
         },
       ),
     );

@@ -1,16 +1,16 @@
-import 'package:draggable_list/widgets/item_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../custom_drag_listener.dart';
+import 'list_widget.dart';
 
-class CustomItem extends StatelessWidget {
+class CustomList extends StatelessWidget {
   final int index;
-  final TextEditingController titleController;
+  final TextEditingController textEditingController;
 
-  const CustomItem({
+  const CustomList({
     Key? key,
     required this.index,
-    required this.titleController,
+    required this.textEditingController,
   }) : super(key: key);
 
   @override
@@ -37,10 +37,10 @@ class CustomItem extends StatelessWidget {
             ),
           ),
           Flexible(
-            child: ItemWidget(
+            child: ListWidget(
               key: ValueKey('$index'),
-              titleController: titleController,
-              onDelete: (itemKey) {
+              textEditingController: textEditingController,
+              onDelete: (listKey) {
                 // _removeItem(itemKey);
               },
             ),

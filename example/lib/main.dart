@@ -28,7 +28,7 @@ class _MyDraggableListState extends State<MyDraggableList> {
   @override
   Widget build(BuildContext context) {
     return DraggableListView(
-      itemNum: 5,
+      listNum: 5,
     );
   }
 }

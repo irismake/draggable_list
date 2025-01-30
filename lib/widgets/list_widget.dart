@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 
-class ItemWidget extends StatefulWidget {
-  final TextEditingController titleController;
+class ListWidget extends StatefulWidget {
+  final TextEditingController textEditingController;
   final Function(int) onDelete;
 
-  const ItemWidget({
+  const ListWidget({
     Key? key,
-    required this.titleController,
+    required this.textEditingController,
     required this.onDelete,
   }) : super(key: key);
 
   @override
-  State<ItemWidget> createState() => _ItemWidgetState();
+  State<ListWidget> createState() => _ListWidgetState();
 }
 
-class _ItemWidgetState extends State<ItemWidget> {
+class _ListWidgetState extends State<ListWidget> {
   late FocusNode _titleFocusNode;
 
-  late int itemKey;
+  late int listKey;
 
   @override
   void initState() {
@@ -26,9 +26,7 @@ class _ItemWidgetState extends State<ItemWidget> {
     _titleFocusNode = FocusNode();
 
     String keyString = widget.key.toString();
-    itemKey = int.tryParse(keyString.replaceAll(RegExp(r'\D'), '')) ?? 0;
-
-    _titleFocusNode.addListener(_onTitleFocusChanged);
+    listKey = int.tryParse(keyString.replaceAll(RegExp(r'\D'), '')) ?? 0;
   }
 
   @override
@@ -36,14 +34,6 @@ class _ItemWidgetState extends State<ItemWidget> {
     _titleFocusNode.dispose();
 
     super.dispose();
-  }
-
-  void _onTitleFocusChanged() {
-    // if (!_titleFocusNode.hasFocus) {
-    //   context.read<ItemProvider>().saveItemTitle = {
-    //     itemKey: widget.titleController.text
-    //   };
-    // }
   }
 
   @override
@@ -67,7 +57,7 @@ class _ItemWidgetState extends State<ItemWidget> {
                 child: TextFormField(
                   focusNode: _titleFocusNode,
                   keyboardType: TextInputType.multiline,
-                  controller: widget.titleController,
+                  controller: widget.textEditingController,
                   textAlignVertical: TextAlignVertical.top,
                   textInputAction: TextInputAction.newline,
                   maxLines: null,
@@ -99,7 +89,7 @@ class _ItemWidgetState extends State<ItemWidget> {
               // InkWell(
               //   onTap: () {
               //     FocusScope.of(context).unfocus();
-              //     widget.onDelete(itemKey);
+              //     widget.onDelete(listKey);
               //   },
               //   child: Padding(
               //     padding: EdgeInsets.symmetric(vertical: 20.0),
