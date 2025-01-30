@@ -3,15 +3,18 @@ library reorderable_list;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'state/draggable_list_style.dart';
 import 'state/list_controller.dart';
 import 'widgets/custom_list.dart';
 
 class DraggableListView extends StatefulWidget {
   final int listNum;
+  final DraggableListStyle style;
 
   const DraggableListView({
     Key? key,
     required this.listNum,
+    this.style = const DraggableListStyle(),
   }) : super(key: key);
 
   @override
@@ -39,6 +42,7 @@ class _DraggableListViewState extends State<DraggableListView> {
             key: ValueKey(index),
             textEditingController: controller.listTextControllers[index],
             index: index,
+            style: widget.style,
           );
         },
         onReorder: (oldIndex, newIndex) {
