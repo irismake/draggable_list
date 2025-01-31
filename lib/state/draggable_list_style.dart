@@ -6,11 +6,11 @@ class DraggableListStyle {
   final Border? border;
   final TextStyle contentTextStyle;
   final TextStyle hintTextStyle;
-  final TextStyle orderTextStyle;
+
   final String hintText;
   final EdgeInsets listPadding;
   final EdgeInsets textPadding;
-  final EdgeInsets orderPadding;
+
   final double animateBeginScale;
   final double animateEndScale;
 
@@ -33,17 +33,10 @@ class DraggableListStyle {
       fontWeight: FontWeight.w500,
       height: 1.43,
     ),
-    this.orderTextStyle = const TextStyle(
-      color: Colors.black,
-      fontSize: 18,
-      fontFamily: 'Pretendard',
-      fontWeight: FontWeight.w700,
-    ),
     this.hintText = '내용을 입력해주세요',
     this.listPadding = const EdgeInsets.symmetric(vertical: 2.0),
     this.textPadding =
         const EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
-    this.orderPadding = const EdgeInsets.all(16.0),
     this.animateBeginScale = 1.0,
     this.animateEndScale = 1.1,
   });

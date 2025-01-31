@@ -48,12 +48,18 @@ class _CustomListState extends State<CustomList> {
       parentContext: context,
       index: widget.index,
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Padding(
-            padding: widget.style.orderPadding,
+          Container(
+            width: 30,
             child: Text(
               '${widget.index + 1}',
-              style: widget.style.orderTextStyle,
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 18,
+                fontFamily: 'Pretendard',
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ),
           Flexible(
@@ -65,39 +71,37 @@ class _CustomListState extends State<CustomList> {
                   color: widget.style.backgroundColor,
                   borderRadius: widget.style.borderRadius,
                 ),
-                child: Expanded(
-                  child: TextFormField(
-                    focusNode: _titleFocusNode,
-                    keyboardType: TextInputType.multiline,
-                    controller: widget.textEditingController,
-                    textAlignVertical: TextAlignVertical.top,
-                    textInputAction: TextInputAction.newline,
-                    maxLines: null,
-                    style: widget.style.contentTextStyle,
-                    decoration: InputDecoration(
-                      hintText: widget.style.hintText,
-                      hintStyle: widget.style.hintTextStyle,
-                      isDense: true,
-                      contentPadding: widget.style.textPadding,
-                      border: InputBorder.none,
-                    ),
+                child: TextFormField(
+                  focusNode: _titleFocusNode,
+                  keyboardType: TextInputType.multiline,
+                  controller: widget.textEditingController,
+                  textAlignVertical: TextAlignVertical.top,
+                  textInputAction: TextInputAction.newline,
+                  maxLines: null,
+                  style: widget.style.contentTextStyle,
+                  decoration: InputDecoration(
+                    hintText: widget.style.hintText,
+                    hintStyle: widget.style.hintTextStyle,
+                    isDense: true,
+                    contentPadding: widget.style.textPadding,
+                    border: InputBorder.none,
                   ),
                 ),
-                // InkWell(
-                //   onTap: () {
-                //     FocusScope.of(context).unfocus();
-                //     widget.onDelete(listKey);
-                //   },
-                //   child: Padding(
-                //     padding: EdgeInsets.symmetric(vertical: 20.0),
-                //     child: Image.asset(
-                //       'assets/icons/icon_delete_fill.png',
-                //       width: 20.0,
-                //       color: Color(0xFF343a40),
-                //     ),
-                //   ),
-                // ),
               ),
+              // InkWell(
+              //   onTap: () {
+              //     FocusScope.of(context).unfocus();
+              //     widget.onDelete(listKey);
+              //   },
+              //   child: Padding(
+              //     padding: EdgeInsets.symmetric(vertical: 20.0),
+              //     child: Image.asset(
+              //       'assets/icons/icon_delete_fill.png',
+              //       width: 20.0,
+              //       color: Color(0xFF343a40),
+              //     ),
+              //   ),
+              // ),
             ),
           ),
         ],

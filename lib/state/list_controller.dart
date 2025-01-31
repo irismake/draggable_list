@@ -9,14 +9,19 @@ class ListController extends GetxController {
   List<String> get listOrder => _listOrder;
   List<TextEditingController> get listTextControllers => _listTextControllers;
 
-  void initializeLists(int count) {
+  void initializeListOrder(int count) {
     _listOrder.clear();
-    _listTextControllers.clear();
-
     _listOrder.addAll(List.generate(count, (index) => 'List $index'));
+
+    print('initializeListOrder');
+  }
+
+  void initializeListTextControllers(int count) {
+    _listTextControllers.clear();
     _listTextControllers.addAll(
       List.generate(count, (_) => TextEditingController()),
     );
+    print('initializeListTextControllers');
   }
 
   void removeList(int index) {
@@ -33,9 +38,19 @@ class ListController extends GetxController {
     final list = _listOrder.removeAt(oldIndex);
     _listOrder.insert(newIndex, list);
 
+    update();
+    print('reorderList');
+  }
+
+  void reorderListTextController(int oldIndex, int newIndex) {
+    if (oldIndex < newIndex) {
+      newIndex -= 1;
+    }
+
     final textController = _listTextControllers.removeAt(oldIndex);
     _listTextControllers.insert(newIndex, textController);
 
     update();
+    print('reorderListTextController');
   }
 }

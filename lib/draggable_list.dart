@@ -1,22 +1,30 @@
-library reorderable_list;
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'state/draggable_list_style.dart';
 import 'state/list_controller.dart';
 import 'widgets/custom_list.dart';
 
+import 'state/draggable_list_style.dart';
+export 'state/list_controller.dart';
+export 'state/draggable_list_style.dart';
+export 'widgets/custom_list.dart';
+
 class DraggableListView extends StatefulWidget {
   final int listNum;
-  final DraggableListStyle style;
   final Duration duration;
+
+  final DraggableListStyle style;
+
+  final Widget? Function(BuildContext, int)? customListBuilder;
+  final ValueChanged<List<String>> listValue;
 
   const DraggableListView({
     Key? key,
     required this.listNum,
-    this.style = const DraggableListStyle(),
     this.duration = const Duration(milliseconds: 150),
+    this.customListBuilder,
+    this.style = const DraggableListStyle(),
+    required this.listValue,
   }) : super(key: key);
 
   @override
@@ -30,7 +38,10 @@ class _DraggableListViewState extends State<DraggableListView> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      controller.initializeLists(widget.listNum);
+      controller.initializeListOrder(widget.listNum);
+      if (widget.customListBuilder == null) {
+        controller.initializeListTextControllers(widget.listNum);
+      }
     });
   }
 
@@ -63,18 +74,23 @@ class _DraggableListViewState extends State<DraggableListView> {
         buildDefaultDragHandles: true,
         physics: ClampingScrollPhysics(),
         shrinkWrap: true,
-        itemCount: controller.listTextControllers.length,
+        itemCount: controller.listOrder.length,
         itemBuilder: (context, index) {
-          return CustomList(
-            key: ValueKey(index),
-            textEditingController: controller.listTextControllers[index],
-            index: index,
-            style: widget.style,
-            duration: widget.duration,
-          );
+          return widget.customListBuilder?.call(context, index) ??
+              CustomList(
+                key: ValueKey(index),
+                textEditingController: controller.listTextControllers[index],
+                index: index,
+                style: widget.style,
+                duration: widget.duration,
+              );
         },
         onReorder: (oldIndex, newIndex) {
           controller.reorderList(oldIndex, newIndex);
+          if (widget.customListBuilder == null) {
+            controller.reorderListTextController(oldIndex, newIndex);
+          }
+          widget.listValue(controller.listOrder);
         },
       ),
     );
