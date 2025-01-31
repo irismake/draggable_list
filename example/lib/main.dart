@@ -70,25 +70,27 @@ class _MyDraggableListState extends State<MyDraggableList> {
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 16),
         child: DraggableListView(
-            listNum: 30,
-            style: listStyle,
+          listNum: 30,
+          style: listStyle,
 
-            // There is no need to enter text in the list, and input is required when using the desired list.
-
-            customListBuilder: (context, index) {
-              return Padding(
-                key: ValueKey(index),
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  height: 100,
-                  width: 10,
-                  color: Colors.orange,
-                ),
-              );
-            },
-            listValue: (value) {
-              print(value);
-            }),
+          // There is no need to enter text in the list, and input is required when using the desired list.
+          // canWrite: true,
+          customListBuilder: (context, index) {
+            return Padding(
+              key: ValueKey(index),
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                height: 100,
+                width: 10,
+                color: Colors.orange,
+                child: Center(child: Text(index.toString())),
+              ),
+            );
+          },
+          listValue: (value) {
+            print(value);
+          },
+        ),
       ),
     );
   }

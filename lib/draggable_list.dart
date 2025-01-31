@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 
 import 'state/list_controller.dart';
 import 'widgets/custom_list.dart';
-
 import 'state/draggable_list_style.dart';
+
 export 'state/list_controller.dart';
 export 'state/draggable_list_style.dart';
 export 'widgets/custom_list.dart';
@@ -12,9 +12,8 @@ export 'widgets/custom_list.dart';
 class DraggableListView extends StatefulWidget {
   final int listNum;
   final Duration duration;
-
+  final bool canWrite;
   final DraggableListStyle style;
-
   final Widget? Function(BuildContext, int)? customListBuilder;
   final ValueChanged<List<String>> listValue;
 
@@ -22,6 +21,7 @@ class DraggableListView extends StatefulWidget {
     Key? key,
     required this.listNum,
     this.duration = const Duration(milliseconds: 150),
+    this.canWrite = false,
     this.customListBuilder,
     this.style = const DraggableListStyle(),
     required this.listValue,
@@ -39,10 +39,38 @@ class _DraggableListViewState extends State<DraggableListView> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       controller.initializeListOrder(widget.listNum);
-      if (widget.customListBuilder == null) {
+      if (widget.canWrite) {
         controller.initializeListTextControllers(widget.listNum);
       }
     });
+  }
+
+  Widget _buildListWidget(BuildContext context, int index) {
+    return widget.canWrite
+        ? CustomList(
+            key: ValueKey(index),
+            textEditingController: controller.listTextControllers[index],
+            index: index,
+            style: widget.style,
+            duration: widget.duration,
+          )
+        : widget.customListBuilder?.call(context, index) ??
+            _defaultListWidget(index);
+  }
+
+  Widget _defaultListWidget(int index) {
+    return Padding(
+      key: ValueKey(index),
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        height: 100,
+        width: 10,
+        color: const Color(0xff5D3FD3),
+        child: const Center(
+          child: Text('example'),
+        ),
+      ),
+    );
   }
 
   @override
@@ -72,22 +100,13 @@ class _DraggableListViewState extends State<DraggableListView> {
           );
         },
         buildDefaultDragHandles: true,
-        physics: ClampingScrollPhysics(),
+        physics: const ClampingScrollPhysics(),
         shrinkWrap: true,
         itemCount: controller.listOrder.length,
-        itemBuilder: (context, index) {
-          return widget.customListBuilder?.call(context, index) ??
-              CustomList(
-                key: ValueKey(index),
-                textEditingController: controller.listTextControllers[index],
-                index: index,
-                style: widget.style,
-                duration: widget.duration,
-              );
-        },
+        itemBuilder: _buildListWidget,
         onReorder: (oldIndex, newIndex) {
           controller.reorderList(oldIndex, newIndex);
-          if (widget.customListBuilder == null) {
+          if (widget.canWrite) {
             controller.reorderListTextController(oldIndex, newIndex);
           }
           widget.listValue(controller.listOrder);
