@@ -75,6 +75,7 @@ class _MyDraggableListState extends State<MyDraggableList> {
 
           // There is no need to enter text in the list, and input is required when using the desired list.
           // canWrite: true,
+          // enableDrag: false,
           customListBuilder: (context, index) {
             return Padding(
               key: ValueKey(index),

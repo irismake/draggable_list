@@ -4,6 +4,7 @@ import '../custom_drag_listener.dart';
 import '../state/draggable_list_style.dart';
 
 class CustomList extends StatefulWidget {
+  final bool enableDrag;
   final int index;
   final TextEditingController textEditingController;
   final DraggableListStyle style;
@@ -11,6 +12,7 @@ class CustomList extends StatefulWidget {
 
   const CustomList({
     Key? key,
+    required this.enableDrag,
     required this.index,
     required this.textEditingController,
     this.style = const DraggableListStyle(),
@@ -43,6 +45,7 @@ class _CustomListState extends State<CustomList> {
   @override
   Widget build(BuildContext context) {
     return CustomDragListener(
+      enableDrag: widget.enableDrag,
       key: Key('${widget.index}'),
       delay: widget.duration,
       parentContext: context,

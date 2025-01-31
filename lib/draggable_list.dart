@@ -13,6 +13,7 @@ class DraggableListView extends StatefulWidget {
   final int listNum;
   final Duration duration;
   final bool canWrite;
+  final bool enableDrag;
   final DraggableListStyle style;
   final Widget? Function(BuildContext, int)? customListBuilder;
   final ValueChanged<List<String>> listValue;
@@ -22,6 +23,7 @@ class DraggableListView extends StatefulWidget {
     required this.listNum,
     this.duration = const Duration(milliseconds: 150),
     this.canWrite = false,
+    this.enableDrag = true,
     this.customListBuilder,
     this.style = const DraggableListStyle(),
     required this.listValue,
@@ -48,6 +50,7 @@ class _DraggableListViewState extends State<DraggableListView> {
   Widget _buildListWidget(BuildContext context, int index) {
     return widget.canWrite
         ? CustomList(
+            enableDrag: widget.enableDrag,
             key: ValueKey(index),
             textEditingController: controller.listTextControllers[index],
             index: index,
@@ -77,41 +80,42 @@ class _DraggableListViewState extends State<DraggableListView> {
   Widget build(BuildContext context) {
     return Obx(
       () => ReorderableListView.builder(
-        proxyDecorator: (child, index, animation) {
-          return Material(
-            color: Colors.transparent,
-            child: ScaleTransition(
-              scale: animation.drive(
-                Tween<double>(
-                        begin: widget.style.animateBeginScale,
-                        end: widget.style.animateEndScale)
-                    .chain(
-                  CurveTween(curve: Curves.linear),
+          proxyDecorator: (child, index, animation) {
+            return Material(
+              color: Colors.transparent,
+              child: ScaleTransition(
+                scale: animation.drive(
+                  Tween<double>(
+                          begin: widget.style.animateBeginScale,
+                          end: widget.style.animateEndScale)
+                      .chain(
+                    CurveTween(curve: Curves.linear),
+                  ),
+                ),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxWidth: MediaQuery.of(context).size.width,
+                    maxHeight: MediaQuery.of(context).size.height * 0.9,
+                  ),
+                  child: child,
                 ),
               ),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxWidth: MediaQuery.of(context).size.width,
-                  maxHeight: MediaQuery.of(context).size.height * 0.9,
-                ),
-                child: child,
-              ),
-            ),
-          );
-        },
-        buildDefaultDragHandles: true,
-        physics: const ClampingScrollPhysics(),
-        shrinkWrap: true,
-        itemCount: controller.listOrder.length,
-        itemBuilder: _buildListWidget,
-        onReorder: (oldIndex, newIndex) {
-          controller.reorderList(oldIndex, newIndex);
-          if (widget.canWrite) {
-            controller.reorderListTextController(oldIndex, newIndex);
-          }
-          widget.listValue(controller.listOrder);
-        },
-      ),
+            );
+          },
+          buildDefaultDragHandles: widget.enableDrag,
+          physics: const ClampingScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: controller.listOrder.length,
+          itemBuilder: (context, index) {
+            return _buildListWidget(context, index);
+          },
+          onReorder: (oldIndex, newIndex) {
+            controller.reorderList(oldIndex, newIndex);
+            if (widget.canWrite) {
+              controller.reorderListTextController(oldIndex, newIndex);
+            }
+            widget.listValue(controller.listOrder);
+          }),
     );
   }
 }
