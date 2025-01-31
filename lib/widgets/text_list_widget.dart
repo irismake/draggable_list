@@ -53,18 +53,20 @@ class _TextListWidgetState extends State<TextListWidget> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Container(
-            width: 30,
-            child: Text(
-              '${widget.index + 1}',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 18,
-                fontFamily: 'Pretendard',
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ),
+          widget.enableDrag
+              ? Container(
+                  width: 30,
+                  child: Text(
+                    '${widget.index + 1}',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                      fontFamily: 'Pretendard',
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                )
+              : const SizedBox.shrink(),
           Flexible(
             child: Padding(
               padding: widget.style.listPadding,
