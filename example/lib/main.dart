@@ -63,6 +63,13 @@ class _MyDraggableListState extends State<MyDraggableList> {
     animateBeginScale: 1.0,
     animateEndScale: 1.2,
   );
+  List<Color> colors = [
+    Colors.orange,
+    Colors.blue,
+    Colors.green,
+    Colors.red,
+    Colors.purple
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +77,7 @@ class _MyDraggableListState extends State<MyDraggableList> {
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 16),
         child: DraggableListView(
-          listNum: 30,
+          listNum: colors.length,
           style: listStyle,
 
           // There is no need to enter text in the list, and input is required when using the desired list.
@@ -82,9 +89,12 @@ class _MyDraggableListState extends State<MyDraggableList> {
               padding: const EdgeInsets.all(8.0),
               child: Container(
                 height: 100,
-                width: 10,
-                color: Colors.orange,
-                child: Center(child: Text(index.toString())),
+                width: 50,
+                color: colors[index],
+                margin: const EdgeInsets.only(right: 8.0),
+                child: Center(
+                    child: Text('${index}',
+                        style: TextStyle(color: Colors.white))),
               ),
             );
           },

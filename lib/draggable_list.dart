@@ -16,7 +16,7 @@ class DraggableListView extends StatefulWidget {
   final bool enableDrag;
   final DraggableListStyle style;
   final Widget? Function(BuildContext, int)? customListBuilder;
-  final ValueChanged<List<String>> listValue;
+  final ValueChanged<List<int>> listValue;
 
   const DraggableListView({
     Key? key,
@@ -57,7 +57,8 @@ class _DraggableListViewState extends State<DraggableListView> {
             style: widget.style,
             duration: widget.duration,
           )
-        : widget.customListBuilder?.call(context, index) ??
+        : widget.customListBuilder
+                ?.call(context, controller.listOrder[index]) ??
             _defaultListWidget(index);
   }
 

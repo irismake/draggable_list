@@ -2,16 +2,16 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
 class ListController extends GetxController {
-  final List<String> _listOrder = <String>[].obs;
+  final List<int> _listOrder = <int>[].obs;
   final RxList<TextEditingController> _listTextControllers =
       <TextEditingController>[].obs;
 
-  List<String> get listOrder => _listOrder;
+  List<int> get listOrder => _listOrder;
   List<TextEditingController> get listTextControllers => _listTextControllers;
 
   void initializeListOrder(int count) {
     _listOrder.clear();
-    _listOrder.addAll(List.generate(count, (index) => 'List $index'));
+    _listOrder.addAll(List.generate(count, (index) => index));
 
     print('initializeListOrder');
   }
