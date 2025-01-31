@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'state/list_controller.dart';
-import 'widgets/custom_list.dart';
+import 'widgets/text_list_widget.dart';
 import 'state/draggable_list_style.dart';
 
 export 'state/list_controller.dart';
 export 'state/draggable_list_style.dart';
-export 'widgets/custom_list.dart';
+export 'widgets/text_list_widget.dart';
 
 class DraggableListView extends StatefulWidget {
   final int listNum;
@@ -49,7 +49,7 @@ class _DraggableListViewState extends State<DraggableListView> {
 
   Widget _buildListWidget(BuildContext context, int index) {
     return widget.canWrite
-        ? CustomList(
+        ? TextListWidget(
             enableDrag: widget.enableDrag,
             key: ValueKey(index),
             textEditingController: controller.listTextControllers[index],

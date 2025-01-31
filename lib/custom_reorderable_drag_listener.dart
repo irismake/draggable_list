@@ -1,12 +1,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-class CustomDragListener extends ReorderableDragStartListener {
+class CustomReorderableDragListener extends ReorderableDragStartListener {
   final Duration delay;
   final BuildContext parentContext;
   final bool enableDrag;
 
-  const CustomDragListener({
+  const CustomReorderableDragListener({
     this.delay = kLongPressTimeout,
     Key? key,
     required Widget child,

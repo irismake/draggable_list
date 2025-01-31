@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-import '../custom_drag_listener.dart';
+import '../custom_reorderable_drag_listener.dart';
 import '../state/draggable_list_style.dart';
 
-class CustomList extends StatefulWidget {
+class TextListWidget extends StatefulWidget {
   final bool enableDrag;
   final int index;
   final TextEditingController textEditingController;
   final DraggableListStyle style;
   final Duration duration;
 
-  const CustomList({
+  const TextListWidget({
     Key? key,
     required this.enableDrag,
     required this.index,
@@ -20,10 +20,10 @@ class CustomList extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<CustomList> createState() => _CustomListState();
+  State<TextListWidget> createState() => _TextListWidgetState();
 }
 
-class _CustomListState extends State<CustomList> {
+class _TextListWidgetState extends State<TextListWidget> {
   late FocusNode _titleFocusNode;
 
   @override
@@ -44,7 +44,7 @@ class _CustomListState extends State<CustomList> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomDragListener(
+    return CustomReorderableDragListener(
       enableDrag: widget.enableDrag,
       key: Key('${widget.index}'),
       delay: widget.duration,
