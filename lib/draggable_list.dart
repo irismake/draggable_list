@@ -51,7 +51,7 @@ class _DraggableListViewState extends State<DraggableListView> {
     return widget.canWrite
         ? TextListWidget(
             enableDrag: widget.enableDrag,
-            key: ValueKey(index),
+            key: ValueKey(controller.listOrder[index]),
             textEditingController: controller.listTextControllers[index],
             index: index,
             style: widget.style,
@@ -63,14 +63,14 @@ class _DraggableListViewState extends State<DraggableListView> {
 
   Widget _defaultListWidget(int index) {
     return Padding(
-      key: ValueKey(index),
+      key: ValueKey(controller.listOrder[index]),
       padding: const EdgeInsets.all(8.0),
       child: Container(
         height: 100,
         width: 10,
         color: const Color(0xff5D3FD3),
-        child: const Center(
-          child: Text('example'),
+        child: Center(
+          child: Text(controller.listOrder[index].toString()),
         ),
       ),
     );
