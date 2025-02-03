@@ -55,7 +55,7 @@ import 'package:draggable_list/draggable_list.dart';
 
 ### **4. Use it**
 
-Sample app demonstrates how simple the usage of the library actually is.
+Example code demonstrates a simple draggable list implementation
 
 
 
