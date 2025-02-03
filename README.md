@@ -55,7 +55,7 @@ import 'package:draggable_list/draggable_list.dart';
 
 ### **4. Use it**
 
-Example code demonstrates a simple draggable list implementation
+[Example code](https://github.com/irismake/draggable_list/blob/main/example/lib/main.dart) demonstrates a simple draggable list implementation
 
 
 
