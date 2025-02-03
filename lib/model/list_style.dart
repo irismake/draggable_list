@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
 
-class DraggableListStyle {
+class ListStyle {
   final Color backgroundColor;
   final BorderRadius? borderRadius;
   final Border? border;
   final TextStyle contentTextStyle;
   final TextStyle hintTextStyle;
-
   final String hintText;
   final EdgeInsets listPadding;
   final EdgeInsets textPadding;
-
   final double animateBeginScale;
   final double animateEndScale;
 
-  const DraggableListStyle({
+  const ListStyle({
     this.backgroundColor = Colors.white,
     this.borderRadius,
     this.border,

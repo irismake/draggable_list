@@ -1,29 +1,38 @@
 import 'package:flutter/material.dart';
 
+import '../model/list_model.dart';
+
 class ListController {
   static final ListController _instance = ListController._internal();
   factory ListController() => _instance;
   ListController._internal();
 
-  final ValueNotifier<List<int>> listOrder = ValueNotifier([]);
+  final ValueNotifier<List<ListModel>> draggableLists = ValueNotifier([]);
   final ValueNotifier<List<TextEditingController>> listTextControllers =
       ValueNotifier([]);
 
-  void initializeListOrder(List<int> list) {
-    listOrder.value = List<int>.from(list);
+  void initializeListOrder(List<ListModel> lists) {
+    draggableLists.value = List<ListModel>.from(lists);
   }
 
   void initializeListTextControllers() {
-    int count = listOrder.value.length;
-    listTextControllers.value =
-        List.generate(count, (_) => TextEditingController());
+    int count = draggableLists.value.length;
+    listTextControllers.value = List.generate(count, (index) {
+      return TextEditingController(
+          text: draggableLists.value[index].listContent);
+    });
   }
 
   void addList({required bool canWrite}) {
-    int newItem = (listOrder.value.isNotEmpty)
-        ? listOrder.value.reduce((a, b) => a > b ? a : b) + 1
+    int newOrder = draggableLists.value.isNotEmpty
+        ? draggableLists.value
+                .reduce((a, b) => a.listOrder > b.listOrder ? a : b)
+                .listOrder +
+            1
         : 1;
-    listOrder.value = [...listOrder.value, newItem];
+
+    ListModel newItem = ListModel(listOrder: newOrder);
+    draggableLists.value = [...draggableLists.value, newItem];
     if (canWrite) {
       addListTextControllers();
     }
@@ -36,34 +45,28 @@ class ListController {
     ];
   }
 
-  void removeList(int index) {
-    if (index >= 0 && index < listTextControllers.value.length) {
-      final updatedList = List<int>.from(listOrder.value);
-      updatedList.removeAt(index);
-      listOrder.value = updatedList;
-    }
-  }
+  // void removeList(int index) {
+  //   if (index >= 0 && index < listTextControllers.value.length) {
+  //     final updatedList = List<int>.from(draggableLists.value);
+  //     updatedList.removeAt(index);
+  //     draggableLists.value = updatedList;
+  //   }
+  // }
 
-  void reorderList(
-      {required int oldIndex, required int newIndex, required bool canWrite}) {
+  void reorderList({required int oldIndex, required int newIndex}) {
     if (oldIndex < newIndex) newIndex -= 1;
-    final updatedList = List<int>.from(listOrder.value);
+    final updatedList = List<ListModel>.from(draggableLists.value);
     final item = updatedList.removeAt(oldIndex);
     updatedList.insert(newIndex, item);
-    listOrder.value = updatedList;
-
-    if (canWrite) {
-      reorderListTextController(oldIndex, newIndex);
-    }
+    draggableLists.value = updatedList;
   }
 
-  void reorderListTextController(int oldIndex, int newIndex) {
+  void reorderListTextController(
+      {required int oldIndex, required int newIndex}) {
     if (oldIndex < newIndex) newIndex -= 1;
     final updatedListTextController =
         List<TextEditingController>.from(listTextControllers.value);
-
     final item = updatedListTextController.removeAt(oldIndex);
-
     updatedListTextController.insert(newIndex, item);
     listTextControllers.value = updatedListTextController;
   }

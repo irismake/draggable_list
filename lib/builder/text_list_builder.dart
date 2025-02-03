@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 import 'custom_reorderable_drag_listener.dart';
-import '../style/draggable_list_style.dart';
+import '../model/list_style.dart';
 
 class TextListBuilder extends StatefulWidget {
   final bool enableDrag;
   final int index;
   final TextEditingController textEditingController;
-  final DraggableListStyle style;
+  final ListStyle style;
   final Duration duration;
 
   const TextListBuilder({
@@ -15,7 +15,7 @@ class TextListBuilder extends StatefulWidget {
     required this.enableDrag,
     required this.index,
     required this.textEditingController,
-    this.style = const DraggableListStyle(),
+    this.style = const ListStyle(),
     required this.duration,
   }) : super(key: key);
 

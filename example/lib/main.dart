@@ -34,7 +34,8 @@ class MyDraggableList extends StatefulWidget {
 
 class _MyDraggableListState extends State<MyDraggableList> {
   late ListController listController;
-  final DraggableListStyle listStyle = DraggableListStyle(
+  late List<ListModel> listValues;
+  final ListStyle listStyle = ListStyle(
     backgroundColor: Colors.white,
     borderRadius: BorderRadius.circular(8.0),
     border: Border.all(
@@ -64,9 +65,21 @@ class _MyDraggableListState extends State<MyDraggableList> {
     animateBeginScale: 1.0,
     animateEndScale: 1.2,
   );
-
-  List<int> listOrder = [1, 2, 3];
   bool canWrite = true;
+  List<String> contents = ['example 1', 'example 2', 'example 3'];
+
+  @override
+  void initState() {
+    super.initState();
+
+    listValues = List.generate(
+      contents.length,
+      (index) => ListModel(
+        listOrder: index,
+        listContent: contents[index],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +87,7 @@ class _MyDraggableListState extends State<MyDraggableList> {
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 16),
         child: DraggableList(
-          listItems: listOrder,
+          listValues: listValues,
           canWrite: canWrite,
           enableDrag: true,
           duration: const Duration(milliseconds: 100),

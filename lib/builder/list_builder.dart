@@ -4,13 +4,13 @@ import '../draggable_list.dart';
 import 'text_list_builder.dart';
 
 class ListBuilder extends StatefulWidget {
-  final DraggableListStyle style;
+  final ListStyle style;
   final Widget? Function(BuildContext, int)? customListBuilder;
 
   const ListBuilder({
     Key? key,
     this.customListBuilder,
-    this.style = const DraggableListStyle(),
+    this.style = const ListStyle(),
   }) : super(key: key);
 
   @override
@@ -37,27 +37,27 @@ class _ListWidgetState extends State<ListBuilder> {
     return canWrite
         ? TextListBuilder(
             enableDrag: enableDrag,
-            key: ValueKey(controller.listOrder.value[index]),
+            key: ValueKey(controller.draggableLists.value[index].listOrder),
             textEditingController: controller.listTextControllers.value[index],
             index: index,
             style: widget.style,
             duration: duration,
           )
-        : widget.customListBuilder
-                ?.call(context, controller.listOrder.value[index]) ??
+        : widget.customListBuilder?.call(
+                context, controller.draggableLists.value[index].listOrder) ??
             _defaultListWidget(index);
   }
 
   Widget _defaultListWidget(int index) {
     return Padding(
-      key: ValueKey(controller.listOrder.value[index]),
+      key: ValueKey(controller.draggableLists.value[index].listOrder),
       padding: const EdgeInsets.all(8.0),
       child: Container(
         height: 100,
         width: 10,
         color: const Color(0xff5D3FD3),
         child: Center(
-          child: Text(controller.listOrder.value[index].toString()),
+          child: Text(controller.draggableLists.value[index].toString()),
         ),
       ),
     );
@@ -65,8 +65,8 @@ class _ListWidgetState extends State<ListBuilder> {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<List<int>>(
-      valueListenable: controller.listOrder,
+    return ValueListenableBuilder<List<ListModel>>(
+      valueListenable: controller.draggableLists,
       builder: (context, listOrder, child) {
         return ReorderableListView.builder(
           proxyDecorator: (child, index, animation) {
@@ -94,13 +94,16 @@ class _ListWidgetState extends State<ListBuilder> {
           buildDefaultDragHandles: enableDrag,
           physics: const ClampingScrollPhysics(),
           shrinkWrap: true,
-          itemCount: controller.listOrder.value.length,
+          itemCount: controller.draggableLists.value.length,
           itemBuilder: (context, index) {
             return _buildListWidget(context, index);
           },
           onReorder: (oldIndex, newIndex) {
-            controller.reorderList(
-                oldIndex: oldIndex, newIndex: newIndex, canWrite: canWrite);
+            controller.reorderList(oldIndex: oldIndex, newIndex: newIndex);
+            if (canWrite) {
+              controller.reorderListTextController(
+                  oldIndex: oldIndex, newIndex: newIndex);
+            }
           },
         );
       },

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'state/list_controller.dart';
 import 'draggable_list.dart';
 
 export 'state/list_controller.dart';
-export 'style/draggable_list_style.dart';
+export 'model/list_style.dart';
 export 'builder/list_builder.dart';
+export 'model/list_model.dart';
 
 class DraggableList extends InheritedWidget {
   final ListController controller;
@@ -14,7 +14,7 @@ class DraggableList extends InheritedWidget {
 
   DraggableList({
     Key? key,
-    required List<int> listItems,
+    required List<ListModel> listValues,
     required Widget child,
     required void Function(ListController) initializeController,
     this.canWrite = false,
@@ -23,7 +23,7 @@ class DraggableList extends InheritedWidget {
   })  : controller = ListController(),
         super(key: key, child: child) {
     initializeController(controller);
-    controller.initializeListOrder(listItems);
+    controller.initializeListOrder(listValues);
     if (canWrite) {
       controller.initializeListTextControllers();
     }
