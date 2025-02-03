@@ -59,6 +59,11 @@ class _ListWidgetState extends State<ListBuilder> {
         child: Center(
           child: Text(
             controller.draggableLists.value[index].listOrder.toString(),
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
       ),

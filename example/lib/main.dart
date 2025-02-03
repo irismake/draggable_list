@@ -101,57 +101,88 @@ class _MyDraggableListState extends State<MyDraggableList> {
           }),
           child: Column(
             children: [
-              ElevatedButton(
-                onPressed: () {
-                  listController.addList();
-                },
-                child: const Text('Add list'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  // Delete last list
-                  listController.removeList(
-                      listController.draggableLists.value.length - 1);
-                },
-                child: const Text('Delete list'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  List<ListModel> finalLists =
-                      listController.draggableLists.value;
-                  List<String> contentList =
-                      finalLists.map((item) => item.listContent ?? "").toList();
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        listController.addList();
+                      },
+                      child: const Text('Add list'),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        listController.removeList(
+                            listController.draggableLists.value.length - 1);
+                      },
+                      child: const Text('Delete list'),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        List<ListModel> finalLists =
+                            listController.draggableLists.value;
+                        List<String> contentList = finalLists
+                            .map((item) => item.listContent ?? "")
+                            .toList();
 
-                  String contentString =
-                      contentList.map((item) => item).join(", ");
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(contentString),
+                        String contentString =
+                            contentList.map((item) => item).join(", ");
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(contentString),
+                          ),
+                        );
+                      },
+                      child: const Text('Save list'),
                     ),
-                  );
-                },
-                child: const Text('Save list'),
+                  ),
+                ],
               ),
-              ListBuilder(
-                style: listStyle,
-                customListBuilder: (context, index) {
-                  return Padding(
-                    key: ValueKey(index),
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      height: 100,
-                      width: 50,
-                      color: Colors.amber,
-                      margin: const EdgeInsets.only(right: 8.0),
-                      child: Center(
-                        child: Text(
-                          '$index',
-                          style: const TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ),
-                  );
-                },
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20.0),
+                child: ListBuilder(
+                  style: listStyle,
+                  customListBuilder: (context, index) {
+                    return Padding(
+                        key: ValueKey(index),
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          height: 100,
+                          width: 50,
+                          decoration: BoxDecoration(
+                            color: Color(0xffFFBE98),
+                            borderRadius: BorderRadius.circular(12.0),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.2),
+                                blurRadius: 6.0,
+                                spreadRadius: 2.0,
+                                offset: Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          margin: const EdgeInsets.only(right: 8.0),
+                          child: Center(
+                            child: Text(
+                              'Customized lists $index',
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ));
+                  },
+                ),
               ),
             ],
           ),
