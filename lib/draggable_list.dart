@@ -3,8 +3,8 @@ import 'state/list_controller.dart';
 import 'draggable_list.dart';
 
 export 'state/list_controller.dart';
-export 'state/draggable_list_style.dart';
-export 'widgets/list_widget.dart';
+export 'style/draggable_list_style.dart';
+export 'builder/list_builder.dart';
 
 class DraggableList extends InheritedWidget {
   final ListController controller;

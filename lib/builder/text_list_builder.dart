@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-import '../custom_reorderable_drag_listener.dart';
-import '../state/draggable_list_style.dart';
+import 'custom_reorderable_drag_listener.dart';
+import '../style/draggable_list_style.dart';
 
-class TextListWidget extends StatefulWidget {
+class TextListBuilder extends StatefulWidget {
   final bool enableDrag;
   final int index;
   final TextEditingController textEditingController;
   final DraggableListStyle style;
   final Duration duration;
 
-  const TextListWidget({
+  const TextListBuilder({
     Key? key,
     required this.enableDrag,
     required this.index,
@@ -20,17 +20,17 @@ class TextListWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<TextListWidget> createState() => _TextListWidgetState();
+  State<TextListBuilder> createState() => _TextListBuilderState();
 }
 
-class _TextListWidgetState extends State<TextListWidget> {
-  late FocusNode _titleFocusNode;
+class _TextListBuilderState extends State<TextListBuilder> {
+  late FocusNode _textFocusNode;
 
   @override
   void initState() {
     super.initState();
 
-    _titleFocusNode = FocusNode();
+    _textFocusNode = FocusNode();
 
     // String keyString = widget.key.toString();
     // listKey = int.tryParse(keyString.replaceAll(RegExp(r'\D'), '')) ?? 0;
@@ -38,7 +38,7 @@ class _TextListWidgetState extends State<TextListWidget> {
 
   @override
   void dispose() {
-    _titleFocusNode.dispose();
+    _textFocusNode.dispose();
     super.dispose();
   }
 
@@ -77,7 +77,7 @@ class _TextListWidgetState extends State<TextListWidget> {
                   borderRadius: widget.style.borderRadius,
                 ),
                 child: TextFormField(
-                  focusNode: _titleFocusNode,
+                  focusNode: _textFocusNode,
                   keyboardType: TextInputType.multiline,
                   controller: widget.textEditingController,
                   textAlignVertical: TextAlignVertical.top,

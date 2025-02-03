@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 import '../draggable_list.dart';
-import 'text_list_widget.dart';
+import 'text_list_builder.dart';
 
-class ListWidget extends StatefulWidget {
+class ListBuilder extends StatefulWidget {
   final DraggableListStyle style;
   final Widget? Function(BuildContext, int)? customListBuilder;
 
-  const ListWidget({
+  const ListBuilder({
     Key? key,
     this.customListBuilder,
     this.style = const DraggableListStyle(),
@@ -17,7 +17,7 @@ class ListWidget extends StatefulWidget {
   _ListWidgetState createState() => _ListWidgetState();
 }
 
-class _ListWidgetState extends State<ListWidget> {
+class _ListWidgetState extends State<ListBuilder> {
   late ListController controller;
   late bool canWrite;
   late bool enableDrag;
@@ -35,7 +35,7 @@ class _ListWidgetState extends State<ListWidget> {
 
   Widget _buildListWidget(BuildContext context, int index) {
     return canWrite
-        ? TextListWidget(
+        ? TextListBuilder(
             enableDrag: enableDrag,
             key: ValueKey(controller.listOrder.value[index]),
             textEditingController: controller.listTextControllers.value[index],
