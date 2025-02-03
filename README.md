@@ -1,39 +1,55 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# **draggable_list**
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
+This repository contains a Flutter-based application and its related backend services.
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
+&nbsp;
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+## **Features**
+- Smooth transition during item insertion and removal from the list with animations.
+- Supports creation and reordering of lists containing text fields
+- All Lists can be customized
+- List creation and deletion buttons can be customized
+- Selectable list drag activation/deactivation
 
-## Features
+&nbsp;
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+## **Demo**
 
-## Getting started
+### **Draggable List**
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
 
-## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
 
-```dart
-const like = 'sample';
+## **How to use it?**
+
+### **1. Add dependency**
+Add this to your package's pubspec.yaml file:
+```bash
+dependencies:
+  draggable_list: <latest_version>
 ```
 
-## Additional information
+### **2. Install it**
+You can install packages from the command line:
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+with pub:
+```bash
+$ pub get
+```
+with Flutter:
+```bash
+$ flutter pub get
+```
+
+### **3. Import it**
+Now in your Dart code, you can use:
+```bash
+import 'package:draggable_list/draggable_list.dart';
+```
+
+### **4. Use it**
+
+Sample app demonstrates how simple the usage of the library actually is.
+
+
+
