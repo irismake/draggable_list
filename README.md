@@ -29,9 +29,10 @@ dependencies:
   draggable_list: <latest_version>
 ```
 
+&nbsp;
+
 ### **2. Install it**
 You can install packages from the command line:
-
 with pub:
 ```bash
 $ pub get
@@ -41,11 +42,16 @@ with Flutter:
 $ flutter pub get
 ```
 
+&nbsp;
+
+
 ### **3. Import it**
 Now in your Dart code, you can use:
 ```bash
 import 'package:draggable_list/draggable_list.dart';
 ```
+
+&nbsp;
 
 ### **4. Use it**
 
