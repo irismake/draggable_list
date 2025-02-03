@@ -21,7 +21,20 @@ class DraggableList extends InheritedWidget {
     this.enableDrag = true,
     this.duration = const Duration(milliseconds: 150),
   })  : controller = ListController(),
-        super(key: key, child: child) {
+        super(
+            key: key,
+            child: Listener(
+              onPointerDown: (_) {
+                FocusManager.instance.primaryFocus?.unfocus();
+              },
+              child: GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onTap: () {
+                  FocusManager.instance.primaryFocus?.unfocus();
+                },
+                child: child,
+              ),
+            )) {
     initializeController(controller);
     controller.saveWriteState = canWrite;
     controller.initializeListOrder(listValues);

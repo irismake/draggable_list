@@ -32,6 +32,7 @@ class _TextListBuilderState extends State<TextListBuilder> {
   void initState() {
     super.initState();
     _textFocusNode = FocusNode();
+    _textFocusNode.addListener(_onFocusChanged);
   }
 
   @override
@@ -40,6 +41,13 @@ class _TextListBuilderState extends State<TextListBuilder> {
     final draggableList = DraggableList.of(context);
     controller = draggableList?.controller ?? ListController();
     canWrite = draggableList?.canWrite ?? false;
+  }
+
+  void _onFocusChanged() {
+    if (!_textFocusNode.hasFocus) {
+      controller.draggableLists.value[widget.index].listContent =
+          widget.textEditingController.text;
+    }
   }
 
   @override

@@ -105,7 +105,7 @@ class _MyDraggableListState extends State<MyDraggableList> {
                 onPressed: () {
                   listController.addList();
                 },
-                child: const Text('Add Item'),
+                child: const Text('Add list'),
               ),
               ElevatedButton(
                 onPressed: () {
@@ -113,7 +113,24 @@ class _MyDraggableListState extends State<MyDraggableList> {
                   listController.removeList(
                       listController.draggableLists.value.length - 1);
                 },
-                child: const Text('delete Item'),
+                child: const Text('Delete list'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  List<ListModel> finalLists =
+                      listController.draggableLists.value;
+                  List<String> contentList =
+                      finalLists.map((item) => item.listContent ?? "").toList();
+
+                  String contentString =
+                      contentList.map((item) => item).join(", ");
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(contentString),
+                    ),
+                  );
+                },
+                child: const Text('Save list'),
               ),
               ListBuilder(
                 style: listStyle,
