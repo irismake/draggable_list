@@ -23,10 +23,8 @@ class DraggableList extends InheritedWidget {
   })  : controller = ListController(),
         super(key: key, child: child) {
     initializeController(controller);
+    controller.saveWriteState = canWrite;
     controller.initializeListOrder(listValues);
-    if (canWrite) {
-      controller.initializeListTextControllers();
-    }
   }
 
   @override

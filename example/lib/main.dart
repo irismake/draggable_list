@@ -61,9 +61,14 @@ class _MyDraggableListState extends State<MyDraggableList> {
     ),
     hintText: '내용',
     listPadding: const EdgeInsets.symmetric(vertical: 2.0),
-    textPadding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
+    textPadding: const EdgeInsets.only(top: 20.0, bottom: 20.0, left: 16.0),
     animateBeginScale: 1.0,
     animateEndScale: 1.2,
+    deleteIcon: const Icon(
+      Icons.cancel,
+      color: Color(0xFF212529),
+      size: 18.0,
+    ),
   );
   bool canWrite = true;
   List<String> contents = ['example 1', 'example 2', 'example 3'];
@@ -98,9 +103,17 @@ class _MyDraggableListState extends State<MyDraggableList> {
             children: [
               ElevatedButton(
                 onPressed: () {
-                  listController.addList(canWrite: canWrite);
+                  listController.addList();
                 },
                 child: const Text('Add Item'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  // Delete last list
+                  listController.removeList(
+                      listController.draggableLists.value.length - 1);
+                },
+                child: const Text('delete Item'),
               ),
               ListBuilder(
                 style: listStyle,

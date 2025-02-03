@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../draggable_list.dart';
 import 'custom_reorderable_drag_listener.dart';
-import '../model/list_style.dart';
 
 class TextListBuilder extends StatefulWidget {
   final bool enableDrag;
@@ -24,16 +24,22 @@ class TextListBuilder extends StatefulWidget {
 }
 
 class _TextListBuilderState extends State<TextListBuilder> {
+  late ListController controller;
+  late bool canWrite;
   late FocusNode _textFocusNode;
 
   @override
   void initState() {
     super.initState();
-
     _textFocusNode = FocusNode();
+  }
 
-    // String keyString = widget.key.toString();
-    // listKey = int.tryParse(keyString.replaceAll(RegExp(r'\D'), '')) ?? 0;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final draggableList = DraggableList.of(context);
+    controller = draggableList?.controller ?? ListController();
+    canWrite = draggableList?.canWrite ?? false;
   }
 
   @override
@@ -76,37 +82,42 @@ class _TextListBuilderState extends State<TextListBuilder> {
                   color: widget.style.backgroundColor,
                   borderRadius: widget.style.borderRadius,
                 ),
-                child: TextFormField(
-                  focusNode: _textFocusNode,
-                  keyboardType: TextInputType.multiline,
-                  controller: widget.textEditingController,
-                  textAlignVertical: TextAlignVertical.top,
-                  textInputAction: TextInputAction.newline,
-                  maxLines: null,
-                  style: widget.style.contentTextStyle,
-                  decoration: InputDecoration(
-                    hintText: widget.style.hintText,
-                    hintStyle: widget.style.hintTextStyle,
-                    isDense: true,
-                    contentPadding: widget.style.textPadding,
-                    border: InputBorder.none,
-                  ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        focusNode: _textFocusNode,
+                        keyboardType: TextInputType.multiline,
+                        controller: widget.textEditingController,
+                        textAlignVertical: TextAlignVertical.top,
+                        textInputAction: TextInputAction.newline,
+                        maxLines: null,
+                        style: widget.style.contentTextStyle,
+                        decoration: InputDecoration(
+                          hintText: widget.style.hintText,
+                          hintStyle: widget.style.hintTextStyle,
+                          isDense: true,
+                          contentPadding: widget.style.textPadding,
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        FocusScope.of(context).unfocus();
+                        controller.removeList(widget.index);
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 16.0, vertical: 20.0),
+                        child: widget.style.deleteIcon,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              // InkWell(
-              //   onTap: () {
-              //     FocusScope.of(context).unfocus();
-              //     widget.onDelete(listKey);
-              //   },
-              //   child: Padding(
-              //     padding: EdgeInsets.symmetric(vertical: 20.0),
-              //     child: Image.asset(
-              //       'assets/icons/icon_delete_fill.png',
-              //       width: 20.0,
-              //       color: Color(0xFF343a40),
-              //     ),
-              //   ),
-              // ),
             ),
           ),
         ],

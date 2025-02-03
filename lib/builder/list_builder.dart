@@ -57,7 +57,9 @@ class _ListWidgetState extends State<ListBuilder> {
         width: 10,
         color: const Color(0xff5D3FD3),
         child: Center(
-          child: Text(controller.draggableLists.value[index].toString()),
+          child: Text(
+            controller.draggableLists.value[index].listOrder.toString(),
+          ),
         ),
       ),
     );
@@ -100,10 +102,6 @@ class _ListWidgetState extends State<ListBuilder> {
           },
           onReorder: (oldIndex, newIndex) {
             controller.reorderList(oldIndex: oldIndex, newIndex: newIndex);
-            if (canWrite) {
-              controller.reorderListTextController(
-                  oldIndex: oldIndex, newIndex: newIndex);
-            }
           },
         );
       },

@@ -11,6 +11,7 @@ class ListStyle {
   final EdgeInsets textPadding;
   final double animateBeginScale;
   final double animateEndScale;
+  final Icon deleteIcon;
 
   const ListStyle({
     this.backgroundColor = Colors.white,
@@ -37,5 +38,10 @@ class ListStyle {
         const EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
     this.animateBeginScale = 1.0,
     this.animateEndScale = 1.1,
+    this.deleteIcon = const Icon(
+      Icons.cancel,
+      color: Colors.black,
+      size: 18.0,
+    ),
   });
 }
