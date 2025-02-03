@@ -1,56 +1,70 @@
-import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
-class ListController extends GetxController {
-  final List<int> _listOrder = <int>[].obs;
-  final RxList<TextEditingController> _listTextControllers =
-      <TextEditingController>[].obs;
+class ListController {
+  static final ListController _instance = ListController._internal();
+  factory ListController() => _instance;
+  ListController._internal();
 
-  List<int> get listOrder => _listOrder;
-  List<TextEditingController> get listTextControllers => _listTextControllers;
+  final ValueNotifier<List<int>> listOrder = ValueNotifier([]);
+  final ValueNotifier<List<TextEditingController>> listTextControllers =
+      ValueNotifier([]);
 
-  void initializeListOrder(int count) {
-    _listOrder.clear();
-    _listOrder.addAll(List.generate(count, (index) => index));
-
-    print('initializeListOrder');
+  void initializeListOrder(List<int> list) {
+    listOrder.value = List<int>.from(list);
   }
 
-  void initializeListTextControllers(int count) {
-    _listTextControllers.clear();
-    _listTextControllers.addAll(
-      List.generate(count, (_) => TextEditingController()),
-    );
-    print('initializeListTextControllers');
+  void initializeListTextControllers() {
+    int count = listOrder.value.length;
+    listTextControllers.value =
+        List.generate(count, (_) => TextEditingController());
+  }
+
+  void addList({required bool canWrite}) {
+    int newItem = (listOrder.value.isNotEmpty)
+        ? listOrder.value.reduce((a, b) => a > b ? a : b) + 1
+        : 1;
+    listOrder.value = [...listOrder.value, newItem];
+    if (canWrite) {
+      addListTextControllers();
+    }
+  }
+
+  void addListTextControllers() {
+    listTextControllers.value = [
+      ...listTextControllers.value,
+      TextEditingController()
+    ];
   }
 
   void removeList(int index) {
-    if (index >= 0 && index < _listTextControllers.length) {
-      _listTextControllers.removeAt(index);
+    if (index >= 0 && index < listTextControllers.value.length) {
+      final updatedList = List<int>.from(listOrder.value);
+      updatedList.removeAt(index);
+      listOrder.value = updatedList;
     }
   }
 
-  void reorderList(int oldIndex, int newIndex) {
-    if (oldIndex < newIndex) {
-      newIndex -= 1;
+  void reorderList(
+      {required int oldIndex, required int newIndex, required bool canWrite}) {
+    if (oldIndex < newIndex) newIndex -= 1;
+    final updatedList = List<int>.from(listOrder.value);
+    final item = updatedList.removeAt(oldIndex);
+    updatedList.insert(newIndex, item);
+    listOrder.value = updatedList;
+
+    if (canWrite) {
+      reorderListTextController(oldIndex, newIndex);
     }
-
-    final list = _listOrder.removeAt(oldIndex);
-    _listOrder.insert(newIndex, list);
-
-    update();
-    print('reorderList');
   }
 
   void reorderListTextController(int oldIndex, int newIndex) {
-    if (oldIndex < newIndex) {
-      newIndex -= 1;
-    }
+    if (oldIndex < newIndex) newIndex -= 1;
+    final updatedListTextController =
+        List<TextEditingController>.from(listTextControllers.value);
 
-    final textController = _listTextControllers.removeAt(oldIndex);
-    _listTextControllers.insert(newIndex, textController);
+    final item = updatedListTextController.removeAt(oldIndex);
 
-    update();
-    print('reorderListTextController');
+    updatedListTextController.insert(newIndex, item);
+    listTextControllers.value = updatedListTextController;
   }
 }

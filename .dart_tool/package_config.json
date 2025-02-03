@@ -56,12 +56,6 @@
       "languageVersion": "3.3"
     },
     {
-      "name": "get",
-      "rootUri": "file:///Users/kimgahee/.pub-cache/hosted/pub.dev/get-4.6.6",
-      "packageUri": "lib/",
-      "languageVersion": "2.15"
-    },
-    {
       "name": "leak_tracker",
       "rootUri": "file:///Users/kimgahee/.pub-cache/hosted/pub.dev/leak_tracker-10.0.5",
       "packageUri": "lib/",
@@ -170,7 +164,7 @@
       "languageVersion": "3.5"
     }
   ],
-  "generated": "2025-01-30T13:23:55.834701Z",
+  "generated": "2025-02-01T14:06:05.754641Z",
   "generator": "pub",
   "generatorVersion": "3.5.3",
   "flutterRoot": "file:///Users/kimgahee/Documents/flutter",

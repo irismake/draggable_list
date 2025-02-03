@@ -33,6 +33,7 @@ class MyDraggableList extends StatefulWidget {
 }
 
 class _MyDraggableListState extends State<MyDraggableList> {
+  late ListController listController;
   final DraggableListStyle listStyle = DraggableListStyle(
     backgroundColor: Colors.white,
     borderRadius: BorderRadius.circular(8.0),
@@ -63,44 +64,54 @@ class _MyDraggableListState extends State<MyDraggableList> {
     animateBeginScale: 1.0,
     animateEndScale: 1.2,
   );
-  List<Color> colors = [
-    Colors.orange,
-    Colors.blue,
-    Colors.green,
-    Colors.red,
-    Colors.purple
-  ];
+
+  List<int> listOrder = [1, 2, 3];
+  bool canWrite = true;
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 16),
-        child: DraggableListView(
-          listNum: colors.length,
-          style: listStyle,
-
-          // There is no need to enter text in the list, and input is required when using the desired list.
-          // canWrite: true,
-          // enableDrag: false,
-          customListBuilder: (context, index) {
-            return Padding(
-              key: ValueKey(index),
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                height: 100,
-                width: 50,
-                color: colors[index],
-                margin: const EdgeInsets.only(right: 8.0),
-                child: Center(
-                    child: Text('${index}',
-                        style: TextStyle(color: Colors.white))),
+        child: DraggableList(
+          listItems: listOrder,
+          canWrite: canWrite,
+          enableDrag: true,
+          duration: const Duration(milliseconds: 100),
+          initializeController: ((controller) {
+            listController = controller;
+          }),
+          child: Column(
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  listController.addList(canWrite: canWrite);
+                },
+                child: const Text('Add Item'),
               ),
-            );
-          },
-          listValue: (value) {
-            print(value);
-          },
+              ListWidget(
+                style: listStyle,
+                customListBuilder: (context, index) {
+                  return Padding(
+                    key: ValueKey(index),
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      height: 100,
+                      width: 50,
+                      color: Colors.amber,
+                      margin: const EdgeInsets.only(right: 8.0),
+                      child: Center(
+                        child: Text(
+                          '$index',
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
