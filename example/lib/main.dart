@@ -92,7 +92,7 @@ class _MyDraggableListState extends State<MyDraggableList> {
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 16),
         child: DraggableList(
-          listValues: listValues,
+          initListValues: listValues,
           canWrite: canWrite,
           enableDrag: true,
           duration: const Duration(milliseconds: 100),

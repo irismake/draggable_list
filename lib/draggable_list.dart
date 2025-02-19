@@ -14,7 +14,7 @@ class DraggableList extends InheritedWidget {
 
   DraggableList({
     Key? key,
-    required List<ListModel> listValues,
+    List<ListModel> initListValues = const [],
     required Widget child,
     required void Function(ListController) initializeController,
     this.canWrite = false,
@@ -37,7 +37,7 @@ class DraggableList extends InheritedWidget {
             )) {
     initializeController(controller);
     controller.saveWriteState = canWrite;
-    controller.initializeListOrder(listValues);
+    controller.initializeListOrder(initListValues);
   }
 
   @override
