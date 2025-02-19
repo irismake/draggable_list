@@ -61,16 +61,16 @@ import 'package:draggable_list/draggable_list.dart';
 
 &nbsp;
 
-### **5. example**
+### **5. Example Description**
 
-* Define DraggableList
+* **Define DraggableList**
 
-  * listValues : Initial list data
-  * listController : Save the controller received from DraggableList
-  * child : widget
-  * canWrite : true when using a list that contains text fields
-  * enableDrag : Whether dragging is possible
-  * duration : Specify a waiting time before starting the drag
+  * `listValues` : Initial list data
+  * `listController` : Save the controller received from DraggableList
+  * `child` : Widget
+  * `canWrite` : True when using a list that contains text fields
+  * `enableDrag` : Whether dragging is possible
+  * `duration` : Specify a waiting time before starting the drag
 
 ```
 import 'package:draggable_list/draggable_list.dart';
@@ -104,11 +104,11 @@ DraggableList(
 
 &nbsp;
 
-* Use listController
+* **Use listController**
 
-  * addList function of listController : Added to the last list
-  * removeList function of listController : The last list is deleted
-  * listController.draggableLists.value : Get the current list order and contents
+  * `addList` function of listController : Added to the last list
+  * `removeList` function of listController : The last list is deleted
+  * `listController.draggableLists.value` : Get the current list order and contents
 
 ```
 // Add Lists
@@ -161,8 +161,67 @@ Padding(
 
 &nbsp;
 
-* Customizing list styles
+* **Customizing list styles**
 
-  * ListBuilder : A widget that displays a list must be defined within the child of DraggableList.
-  * ListStyle : A class to customize a list containing text fields (canwrite = true). You can define hintText, textStyle, animateScale, etc.
-  * customListBuilde : Customization of list items that do not contain a text field (canwrite=false) is possible.
+  * `ListBuilder` : A widget that displays a list must be defined within the child of DraggableList.
+  * `ListStyle` : A class to customize a list containing text fields (canwrite = true). You can define hintText, textStyle, animateScale, etc.
+  * `customListBuilde` : Customization of list items that do not contain a text field (canwrite=false) is possible.
+
+```
+// ListStyle
+
+final ListStyle listStyle = ListStyle(
+    backgroundColor: Colors.white,
+    borderRadius: BorderRadius.circular(8.0),
+    border: Border.all(
+      color: Colors.grey,
+      width: 0.5,
+      style: BorderStyle.solid,
+    ),
+    contentTextStyle: const TextStyle(
+      decorationThickness: 0,
+      color: Colors.black,
+      fontSize: 14,
+      fontFamily: 'Pretendard',
+      fontWeight: FontWeight.w500,
+      height: 1.43,
+    ),
+    hintTextStyle: const TextStyle(
+      decorationThickness: 0,
+      color: Color(0xffADB5BD),
+      fontSize: 14,
+      fontFamily: 'Pretendard',
+      fontWeight: FontWeight.w500,
+      height: 1.43,
+    ),
+    hintText: '내용',
+    listPadding: const EdgeInsets.symmetric(vertical: 2.0),
+    textPadding: const EdgeInsets.only(top: 20.0, bottom: 20.0, left: 16.0),
+    animateBeginScale: 1.0,
+    animateEndScale: 1.2,
+    deleteIcon: const Icon(
+      Icons.cancel,
+      color: Color(0xFF212529),
+      size: 18.0,
+    ),
+  );
+
+
+// ListBuilder
+
+Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20.0),
+      child: ListBuilder(
+          style: listStyle,
+          customListBuilder: (context, index) {
+            return Padding(
+              key: ValueKey(index),
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                height: 100,
+                width: 50,
+              ),
+            );
+          }),
+);
+```
