@@ -25,7 +25,6 @@ class TextListBuilder extends StatefulWidget {
 
 class _TextListBuilderState extends State<TextListBuilder> {
   late ListController controller;
-  late bool canWrite;
   late FocusNode _textFocusNode;
 
   @override
@@ -40,7 +39,6 @@ class _TextListBuilderState extends State<TextListBuilder> {
     super.didChangeDependencies();
     final draggableList = DraggableList.of(context);
     controller = draggableList?.controller ?? ListController();
-    canWrite = draggableList?.canWrite ?? false;
   }
 
   void _onFocusChanged() {
@@ -62,7 +60,6 @@ class _TextListBuilderState extends State<TextListBuilder> {
       enableDrag: widget.enableDrag,
       key: Key('${widget.index}'),
       delay: widget.duration,
-      parentContext: context,
       index: widget.index,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -114,7 +111,6 @@ class _TextListBuilderState extends State<TextListBuilder> {
                     ),
                     InkWell(
                       onTap: () {
-                        FocusScope.of(context).unfocus();
                         controller.removeList(widget.index);
                       },
                       child: Padding(

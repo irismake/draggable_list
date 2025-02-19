@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 class CustomReorderableDragListener extends ReorderableDragStartListener {
   final Duration delay;
-  final BuildContext parentContext;
   final bool enableDrag;
 
   const CustomReorderableDragListener({
@@ -11,7 +10,6 @@ class CustomReorderableDragListener extends ReorderableDragStartListener {
     Key? key,
     required Widget child,
     required int index,
-    required this.parentContext,
     required this.enableDrag,
   }) : super(
           key: key,
@@ -22,8 +20,6 @@ class CustomReorderableDragListener extends ReorderableDragStartListener {
 
   @override
   MultiDragGestureRecognizer createRecognizer() {
-    FocusScope.of(parentContext).unfocus();
-
     if (!enableDrag) {
       return ImmediateMultiDragGestureRecognizer(debugOwner: this);
     }
