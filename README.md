@@ -1,6 +1,6 @@
 # **draggable_list**
 
-This repository contains a Flutter-based application and its related backend services.
+This package is a Flutter package that allows you to intuitively sort the order of a list by dragging. It is designed to work smoothly not only with simple container elements but also with complex lists that include text fields.
 
 &nbsp;
 
@@ -59,4 +59,110 @@ import 'package:draggable_list/draggable_list.dart';
 [Example code](https://github.com/irismake/draggable_list/blob/main/example/lib/main.dart) demonstrates a simple draggable list implementation
 
 
+&nbsp;
 
+### **5. example**
+
+* Define DraggableList
+
+  * listValues : Initial list data
+  * listController : Save the controller received from DraggableList
+  * child : widget
+  * canWrite : true when using a list that contains text fields
+  * enableDrag : Whether dragging is possible
+  * duration : Specify a waiting time before starting the drag
+
+```
+import 'package:draggable_list/draggable_list.dart';
+
+// listValues initialize
+late List<ListModel> listValues;
+
+listValues = List.generate(
+  contents.length,
+  (index) => ListModel(
+    listOrder: index,
+    listContent: contents[index],
+    ),
+);
+    
+// listController lazy initialization
+late ListController listController;
+
+DraggableList(
+  listValues: listValues,
+  canWrite: canWrite,
+  enableDrag: true,
+  duration: const Duration(milliseconds: 100),
+  initializeController: ((controller) {
+// listController 초기화
+  listController = controller;
+  }),
+  child:
+)
+```
+
+&nbsp;
+
+* Use listController
+
+  * addList function of listController : Added to the last list
+  * removeList function of listController : The last list is deleted
+  * listController.draggableLists.value : Get the current list order and contents
+
+```
+// Add Lists
+
+Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 6.0),
+      child: ElevatedButton(
+        onPressed: () {
+          listController.addList();
+        },
+        child: const Text('Add list'),
+      ),
+    );
+    
+// Remove Lists
+
+Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 6.0),
+      child: ElevatedButton(
+        onPressed: () {
+          listController
+              .removeList(listController.draggableLists.value.length - 1);
+        },
+        child: const Text('Delete list'),
+      ),
+    ); 
+
+// Get Lists info
+
+Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 6.0),
+      child: ElevatedButton(
+        onPressed: () {
+          List<ListModel> finalLists = listController.draggableLists.value;
+          List<String> contentList =
+              finalLists.map((item) => item.listContent ?? "").toList();
+
+          String contentString = contentList.map((item) => item).join(", ");
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(contentString),
+            ),
+          );
+        },
+        child: const Text('Save list'),
+      ),
+    );
+
+```
+
+&nbsp;
+
+* Customizing list styles
+
+  * ListBuilder : A widget that displays a list must be defined within the child of DraggableList.
+  * ListStyle : A class to customize a list containing text fields (canwrite = true). You can define hintText, textStyle, animateScale, etc.
+  * customListBuilde : Customization of list items that do not contain a text field (canwrite=false) is possible.
