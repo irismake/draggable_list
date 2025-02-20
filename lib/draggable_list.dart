@@ -7,6 +7,7 @@ export 'builder/list_builder.dart';
 export 'model/list_model.dart';
 
 class DraggableList extends InheritedWidget {
+  final List<ListModel> initListValues;
   final ListController controller;
   final bool canWrite;
   final bool enableDrag;
@@ -14,7 +15,7 @@ class DraggableList extends InheritedWidget {
 
   DraggableList({
     Key? key,
-    List<ListModel> initListValues = const [],
+    this.initListValues = const [],
     required Widget child,
     required void Function(ListController) initializeController,
     this.canWrite = false,
