@@ -110,6 +110,7 @@ class _TextListBuilderState extends State<TextListBuilder> {
                       ),
                     ),
                     InkWell(
+                      key: Key('deleteButton_${widget.index}'),
                       onTap: () {
                         controller.removeList(widget.index);
                       },
