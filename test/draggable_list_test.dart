@@ -298,5 +298,168 @@ void main() {
       expect(controller.draggableLists.value[0].listContent, 'Item 1');
       expect(controller.draggableLists.value[1].listContent, 'Item 0');
     });
+
+    testWidgets('Test : 텍스트 필드의 TextEditingController 생성 및 삭제',
+        (WidgetTester tester) async {
+      late ListController controller;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: DraggableList(
+              canWrite: true,
+              initListValues: [
+                ListModel(listContent: 'Item 0', listOrder: 0),
+              ],
+              initializeController: (ctrl) {
+                controller = ctrl;
+              },
+              child: Column(
+                children: [
+                  ListBuilder(),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+
+      // TextEditingController가 정상적으로 생성되었는지 확인
+      final textFieldFinder = find.byType(TextField);
+      expect(textFieldFinder, findsOneWidget);
+
+      // 아이템 추가
+      controller.addList();
+      await tester.pump();
+
+      // 새로운 아이템이 추가되었으므로 TextField도 추가되어야 함
+      expect(find.byType(TextField), findsNWidgets(2));
+
+      // 아이템 삭제
+      controller.removeList(0);
+      await tester.pump();
+
+      // 삭제 후 하나 남아야 함
+      expect(find.byType(TextField), findsOneWidget);
+    });
+
+    testWidgets('Test : 키보드 입력 시 리스트 내용이 정상적으로 저장되는지',
+        (WidgetTester tester) async {
+      late ListController controller;
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: DraggableList(
+              canWrite: true,
+              initListValues: [
+                ListModel(listContent: 'Item 0', listOrder: 0),
+                ListModel(listContent: 'Item 1', listOrder: 1),
+              ],
+              initializeController: (ctrl) {
+                controller = ctrl;
+              },
+              child: Column(
+                children: [
+                  ListBuilder(),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+      final firstItemFinder =
+          find.byKey(ValueKey(controller.draggableLists.value.first.listOrder));
+      final lastItemFinder =
+          find.byKey(ValueKey(controller.draggableLists.value.last.listOrder));
+
+      final firstTextFieldFinder = find.descendant(
+          of: firstItemFinder, matching: find.byType(TextField));
+      final lastTextFieldFinder =
+          find.descendant(of: lastItemFinder, matching: find.byType(TextField));
+
+      expect(firstTextFieldFinder, findsOneWidget);
+      expect(lastTextFieldFinder, findsOneWidget);
+
+      await tester.enterText(firstTextFieldFinder, 'Updated Item 0');
+      await tester.pump();
+
+      await tester.enterText(lastTextFieldFinder, 'Updated Item 1');
+      await tester.pump();
+
+      // 완료 버튼
+      await tester.testTextInput.receiveAction(TextInputAction.done);
+      await tester.pump();
+
+      expect(
+          controller.draggableLists.value.first.listContent, 'Updated Item 0');
+      expect(
+          controller.draggableLists.value.last.listContent, 'Updated Item 1');
+    });
+
+    testWidgets('Test : 키보드 unfocus시 키보드 해제 및 content 저장',
+        (WidgetTester tester) async {
+      late ListController controller;
+      final List<ListModel> items = List.generate(
+        20,
+        (index) => ListModel(listContent: 'Item $index', listOrder: index),
+      );
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: SingleChildScrollView(
+              child: DraggableList(
+                canWrite: true,
+                initListValues: items,
+                initializeController: (ctrl) {
+                  controller = ctrl;
+                },
+                child: Column(
+                  children: [
+                    ListBuilder(),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+      // 스크롤 가능한 위젯 찾기
+      final scrollableFinder = find.ancestor(
+        of: find.byType(DraggableList),
+        matching: find.byType(Scrollable),
+      );
+
+      final firstItemFinder =
+          find.byKey(ValueKey(controller.draggableLists.value.first.listOrder));
+
+      final firstTextFieldFinder = find.descendant(
+          of: firstItemFinder, matching: find.byType(TextField));
+
+      expect(firstTextFieldFinder, findsOneWidget);
+
+      await tester.enterText(firstTextFieldFinder, 'Updated Item 0');
+      await tester.pump();
+
+      // 첫 번째 입력 후 키보드가 올라와 있는지 확인
+      expect(FocusManager.instance.primaryFocus, isNotNull);
+
+      // 아래로 스크롤 (위에서 아래로 드래그)
+      await tester.drag(scrollableFinder, const Offset(0, 300));
+      await tester.pumpAndSettle();
+
+      // 리스트의 마지막 아이템이 이제 보여야 함
+      expect(find.text('Item 19'), findsOneWidget);
+      // 첫 번째 아이템은 안 보여야 함
+      expect(find.text('Item 0'), findsNothing);
+      // Focus가 바뀌면서 기존 키보드가 내려가야 함
+      expect(FocusManager.instance.primaryFocus, isNotNull);
+
+      // 다시 위로 스크롤 (아래에서 위로 드래그)
+      await tester.drag(scrollableFinder, const Offset(0, -300));
+      await tester.pumpAndSettle();
+
+      expect(
+          controller.draggableLists.value.first.listContent, 'Updated Item 0');
+    });
   });
 }
