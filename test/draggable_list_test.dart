@@ -1,4 +1,5 @@
 import 'package:draggable_list/builder/custom_reorderable_drag_listener.dart';
+import 'package:draggable_list/widget/text_list_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -168,26 +169,80 @@ void main() {
           ),
         ),
       );
-
+      // listOrder : 0,1
       expect(controller.draggableLists.value.length, 2);
 
       await tester.tap(find.byKey(const Key('addButton')));
       await tester.pump();
-
+      // listOrder : 0,1,2
       expect(controller.draggableLists.value.length, 3);
       expect(controller.draggableLists.value.last.listOrder, 2);
 
       await tester.tap(find.byKey(const Key('removeButton')));
       await tester.pump();
-
+      // listOrder : 1,2
       expect(controller.draggableLists.value.length, 2);
       expect(controller.draggableLists.value.first.listOrder, 1);
 
-      await tester.tap(find.byKey(const Key('deleteButton_0')));
+      await tester.tap(find.byKey(Key(
+          'deleteButton_${ValueKey(controller.draggableLists.value[0].listOrder)}')));
       await tester.pump();
-
+      // listOrder : 2
       expect(controller.draggableLists.value.length, 1);
       expect(controller.draggableLists.value.first.listOrder, 2);
+    });
+
+    testWidgets('Test : 기본 리스트 드래그 앤 드롭', (WidgetTester tester) async {
+      late ListController controller = ListController();
+      final List<ListModel> items = [
+        ListModel(listContent: 'Item 0', listOrder: 0),
+        ListModel(listContent: 'Item 1', listOrder: 1),
+      ];
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: DraggableList(
+                canWrite: false,
+                initListValues: items,
+                initializeController: (ctrl) {
+                  controller = ctrl;
+                },
+                child: Column(
+                  children: [
+                    ListBuilder(),
+                  ],
+                )),
+          ),
+        ),
+      );
+      // Item 0 찾기
+      final firstItemFinder =
+          find.byKey(ValueKey(controller.draggableLists.value.first.listOrder));
+      // Item 높이 찾기
+      final itemHeight = tester.getSize(firstItemFinder).height;
+
+      // 드래그 시작 (드래그 핸들 위치에서 터치 시작)
+      final gesture =
+          await tester.startGesture(tester.getCenter(firstItemFinder));
+
+      // DelayedMultiDragGestureRecognizer의 딜레이를 처리하기 위해 pump (delay 디폴트 값 150ms 적용)
+      await tester.pump(Duration(milliseconds: 150));
+
+      // 드래그 동작 수행
+      await gesture.moveBy(Offset(0, itemHeight + 200.0));
+
+      // 터치 해제 (드래그 종료)
+      await gesture.up();
+
+      // 애니메이션이 끝날 때까지 pumpAndSettle 호출
+      await tester.pumpAndSettle();
+
+      // 리스트 순서와 리스트 내용이 정렬 되었는지 확인
+      expect(controller.draggableLists.value[0].listOrder, 1);
+      expect(controller.draggableLists.value[1].listOrder, 0);
+      expect(controller.draggableLists.value[0].listContent, 'Item 1');
+      expect(controller.draggableLists.value[1].listContent, 'Item 0');
     });
 
     testWidgets('Test : 텍스트 필드 리스트 드래그 앤 드롭', (WidgetTester tester) async {
@@ -214,18 +269,16 @@ void main() {
           ),
         ),
       );
-      // Item 0 찾기
-      final firstItemFinder = find.byKey(ValueKey(0));
 
-      // CustomReorderableDragListener 위젯 찾기 (드래그 핸들)
-      final dragHandleFinder = find.descendant(
-        of: firstItemFinder,
+      // CustomReorderableDragListener 위젯들 찾기 (드래그 핸들)
+      final dragHandleFinder = find.ancestor(
+        of: find.byType(TextListWidget),
         matching: find.byType(CustomReorderableDragListener),
       );
 
-      // 드래그 시작 (드래그 핸들 위치에서 터치 시작)
+      // 첫번째 위젯 드래그 시작 (드래그 핸들 위치에서 터치 시작)
       final gesture =
-          await tester.startGesture(tester.getCenter(dragHandleFinder));
+          await tester.startGesture(tester.getCenter(dragHandleFinder.first));
 
       // DelayedMultiDragGestureRecognizer의 딜레이를 처리하기 위해 pump (delay 디폴트 값 150ms 적용)
       await tester.pump(Duration(milliseconds: 150));

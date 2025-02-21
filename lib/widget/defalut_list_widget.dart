@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-Widget defaultListWidget({required int key, required String content}) {
+Widget defaultListWidget({required ValueKey key, required String content}) {
   return Padding(
-    key: ValueKey(key),
+    key: key,
     padding: const EdgeInsets.all(8.0),
     child: Container(
       height: 100,

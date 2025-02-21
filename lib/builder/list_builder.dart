@@ -47,7 +47,7 @@ class _ListWidgetState extends State<ListBuilder> {
         : widget.customListBuilder?.call(
                 context, controller.draggableLists.value[index].listOrder) ??
             defaultListWidget(
-                key: controller.draggableLists.value[index].listOrder,
+                key: ValueKey(controller.draggableLists.value[index].listOrder),
                 content: controller.draggableLists.value[index].listOrder
                     .toString());
   }
@@ -86,11 +86,14 @@ class _ListWidgetState extends State<ListBuilder> {
           itemCount: controller.draggableLists.value.length,
           itemBuilder: (context, index) {
             return CustomReorderableDragListener(
-                enableDrag: enableDrag,
-                key: Key('${index}'),
-                delay: duration,
-                index: index,
-                child: _buildListWidget(context, index));
+              enableDrag: enableDrag,
+              key: ValueKey(
+                controller.draggableLists.value[index].listOrder,
+              ),
+              delay: duration,
+              index: index,
+              child: _buildListWidget(context, index),
+            );
           },
           onReorder: (oldIndex, newIndex) {
             controller.reorderList(oldIndex: oldIndex, newIndex: newIndex);
