@@ -1,8 +1,8 @@
+import 'package:draggable_list/builder/custom_reorderable_drag_listener.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:draggable_list/draggable_list.dart';
-import 'package:draggable_list/builder/custom_reorderable_drag_listener.dart';
 
 void main() {
   group('DraggableList Tests', () {
