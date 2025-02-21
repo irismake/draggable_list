@@ -1,6 +1,6 @@
 name: draggable_list
 description: "A customizable draggable list view for Flutter."
-version: 0.0.2
+version: 0.0.3
 homepage: https://github.com/irismake/draggable_list.git
 
 environment:
